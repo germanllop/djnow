@@ -1,0 +1,40 @@
+{
+  "name": "djnow-app-service",
+  "version": "1.0.0",
+  "description": "Express js app for DJ Now Web App",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "author": "German Llop",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "connect-history-api-fallback": "^1.6.0",
+    "connect-mongo": "^3.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "greenlock-express": "^2.7.18",
+    "greenlock-store-fs": "^3.2.2",
+    "jimp": "^0.12.1",
+    "mongoose": "^5.9.10",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
+    "passport-http": "^0.3.0",
+    "passport-instagram": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
+    "simple-crypto-js": "^3.0.0",
+    "socket.io": "^2.3.0",
+    "util": "^0.12.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
