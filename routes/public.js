@@ -49,7 +49,7 @@ router.post('/canStream',async function(req,res){
 
     for (let index = 0; index < req.body.PublishAuthRequest.length; index++) {
         const element = req.body.PublishAuthRequest[index]
-        let token = element.stream.replace('now_','')
+        let token = element.stream.replace('beat/now_','')
         let status = await userController.getStreamAccess(token)
         newresponse.PublishAuthResponse.push({
             seq:element.seq,
