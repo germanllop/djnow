@@ -43,6 +43,8 @@ router.get('/getCategories',async function(req, res){
 })
 
 router.post('/canStream',async function(req,res){
+    console.log(req.body)
+
     let newresponse = {
         PublishAuthResponse:[]
     }    
@@ -57,6 +59,7 @@ router.post('/canStream',async function(req,res){
             status:status
         }) 
     }
+    console.log(newresponse)
     
     res.send(newresponse)
 })
