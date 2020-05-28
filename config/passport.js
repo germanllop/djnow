@@ -82,14 +82,13 @@ passport.use(new InstagramStrategy({
     profileFields: ['email','displayName','picture']
   },
   function(accessToken, refreshToken, profile, done) {
-    // User.findOne({ instagramId: profile.id }, (err, user)=>{
-    //     if(user){return done(err, user)}
-    //    // TODO: Copiar de facebook 
-    // }).populate('categories')
-    // console.log(profile)
-    
-    // return profile
-    done(err,true)
+      console.log('aqui')
+      console.log(accessToken,refreshToken,profile)
+      
+    User.findOne({ }, (err, user)=>{
+        done(err,user)
+       // TODO: Copiar de facebook 
+    }).populate('categories')
   }
 ))
 
