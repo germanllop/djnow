@@ -10,7 +10,7 @@ const User = require('../models/user')
 
 // Facebook auth routes
 router.get('/facebook',
-  passport.authenticate('facebook',{ scope: ['instagram_basic'] }))
+  passport.authenticate('facebook',{ scope: ['email'] }))
 
 router.get('/facebook/callback',
   passport.authenticate('facebook', { failureRedirect: process.env.BASE_URL }),
@@ -21,13 +21,13 @@ router.get('/facebook/callback',
 
 // Instagram auth routes
 router.get('/instagram',
-  passport.authenticate('instagram',{ scope: ['email'] }))
+  passport.authenticate('instagram',{ scope: ['basic'] }))
 
 router.get('/instagram/callback', 
   passport.authenticate('instagram', { failureRedirect: process.env.BASE_URL }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect(process.env.BASE_URL)
+    res.redirect(process.env.BASE_URL+'/profile')
   })
 
 //Basic email and password auth routes
