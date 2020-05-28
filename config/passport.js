@@ -87,7 +87,7 @@ passport.use(new InstagramStrategy({
     // }).populate('categories')
     //console.log(profile)
     
-    return profile
+    return done(err, profile)
   }
 ))
 
