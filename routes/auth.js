@@ -21,12 +21,13 @@ router.get('/facebook/callback',
 
 // Instagram auth routes
 router.get('/instagram',
-  passport.authenticate('instagram'))
+  passport.authenticate('instagram',{ scope: ['user_profile'] }))
 
 router.get('/instagram/callback', 
   passport.authenticate('instagram', { failureRedirect: process.env.BASE_URL }),
   function(req, res) {
     // Successful authentication, redirect home.
+    res.send(req.user)
     res.redirect(process.env.BASE_URL+'/profile')
   })
 
