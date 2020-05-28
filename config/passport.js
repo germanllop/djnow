@@ -78,7 +78,8 @@ passport.use(new FacebookStrategy({
 passport.use(new InstagramStrategy({
     clientID: process.env.INSTAGRAM_CLIENT_ID,
     clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
-    callbackURL: process.env.BASE_URL+"/auth/instagram/callback"
+    callbackURL: process.env.BASE_URL+"/auth/instagram/callback",
+    profileFields: ['email','displayName','picture']
   },
   function(accessToken, refreshToken, profile, done) {
     // User.findOne({ instagramId: profile.id }, (err, user)=>{
@@ -88,7 +89,7 @@ passport.use(new InstagramStrategy({
     // console.log(profile)
     
     // return profile
-    done(err,accessToken)
+    done(err,true)
   }
 ))
 

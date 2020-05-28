@@ -27,8 +27,8 @@ router.get('/instagram/callback',
   passport.authenticate('instagram', { failureRedirect: process.env.BASE_URL }),
   function(req, res) {
     // Successful authentication, redirect home.
-    res.send(req.user)
-    res.redirect(process.env.BASE_URL+'/profile')
+    res.send(user)
+    //res.redirect(process.env.BASE_URL+'/profile')
   })
 
 //Basic email and password auth routes
