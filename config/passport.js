@@ -85,9 +85,9 @@ passport.use(new InstagramStrategy({
     //     if(user){return done(err, user)}
     //    // TODO: Copiar de facebook 
     // }).populate('categories')
-    console.log(profile)
+    //console.log(profile)
     
-    return done(err, user)
+    return profile
   }
 ))
 
