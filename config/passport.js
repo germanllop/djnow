@@ -74,23 +74,23 @@ passport.use(new FacebookStrategy({
   }
 ))
 
-// Instagram Login
-passport.use(new InstagramStrategy({
-    clientID: process.env.INSTAGRAM_CLIENT_ID,
-    clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
-    callbackURL: process.env.BASE_URL+"/auth/instagram/callback",
-    profileFields: ['email','displayName','picture']
-  },
-  function(accessToken, refreshToken, profile, done) {
-      console.log('aqui')
-      console.log(accessToken,refreshToken,profile)
+// // Instagram Login
+// passport.use(new InstagramStrategy({
+//     clientID: process.env.INSTAGRAM_CLIENT_ID,
+//     clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
+//     callbackURL: process.env.BASE_URL+"/auth/instagram/callback",
+//     profileFields: ['email','displayName','picture']
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//       console.log('aqui')
+//       console.log(accessToken,refreshToken,profile)
       
-    User.findOne({ }, (err, user)=>{
-        done(err,user)
-       // TODO: Copiar de facebook 
-    }).populate('categories')
-  }
-))
+//     User.findOne({ }, (err, user)=>{
+//         done(err,user)
+//        // TODO: Copiar de facebook 
+//     }).populate('categories')
+//   }
+// ))
 
 //Basic Email and Password Login
 passport.use(new LocalStrategy(
