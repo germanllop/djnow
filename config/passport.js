@@ -82,8 +82,11 @@ passport.use(new InstagramStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
     // User.findOne({ instagramId: profile.id }, (err, user)=>{
-    //   return done(err, user) // TODO: Copiar de facebook 
+    //     if(user){return done(err, user)}
+    //    // TODO: Copiar de facebook 
     // }).populate('categories')
+    console.log(profile)
+    
     return done(err, user)
   }
 ))
