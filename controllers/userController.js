@@ -1,5 +1,9 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
+const transporter = require('../config/nodemailer')
+const whiskers = require('whiskers')
+const fs = require('fs')
+const path = require('path')
 
 // Dev Function so we can use the first user
 
@@ -85,6 +89,53 @@ async function changePassword(id,newPassword){
     })
 }
 
+async function sendConfirmationEmail(user){
+    const fullUser = await User.findById(user._id,'+emailVerificationToken').exec()
+    if(!fullUser.emailVerificationSent && !fullUser.emailIsVerified){
+        
+        const template = fs.readFileSync(path.join(__dirname, '../templates/')+'email.html','utf-8')
+        const redered = whiskers.render(template,{
+            fullUser:{
+                url:process.env.BASE_URL+'/public/confirmEmail/'+fullUser.emailVerificationToken,
+                name:fullUser.name
+            }
+        })
+        let info =  await transporter.sendMail({
+            from: '"Dj Now" <now@djnow.live>', // sender address
+            to: fullUser.email, // list of receivers
+            subject: "Email Verification", // Subject line
+            text: "Email Verification", // plain text body
+            html: redered, // html body
+        })
+        if(info.accepted.length){
+            const date = new Date()
+            fullUser.emailVerificationSent = date
+            await fullUser.save()
+        }
+        return info
+    }else{
+        return null
+    }
+    
+    
+}
+
+async function confirmEmail(token){
+    const user = await User.findOne({emailVerificationToken:token}).exec()
+    if(user){
+        if(user.emailIsVerified){
+            return user
+        }else{
+            user.emailIsVerified = true
+            const newUser = await user.save()
+            return newUser
+        }
+        
+    }else{
+        return 'Nothing to verify.'
+    }
+}
+
 
 module.exports = {
     getByHandle,
@@ -92,5 +143,7 @@ module.exports = {
     getSomeUsers,
     getStreamAccess,
     updateUser,
-    changePassword
+    changePassword,
+    confirmEmail,
+    sendConfirmationEmail
 }

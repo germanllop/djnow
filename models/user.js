@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     type:String,
     select:false
   },
+  emailVerificationSent:{
+    type:Date,
+    default:null
+  },
   picture:{
       type:Object
   },

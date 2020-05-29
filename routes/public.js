@@ -18,8 +18,6 @@ router.get('/this',async function(req,res){
             })
           })       
     })
-    
-    
 })
 
 router.get('/getStreamer/:handle',async function(req, res){
@@ -62,6 +60,11 @@ router.post('/canStream',async function(req,res){
     console.log(newresponse)
     
     res.send(newresponse)
+})
+
+router.get('/confirmEmail/:token',async function(req,res){
+    const user = await userController.confirmEmail(req.params.token)
+    res.send(user)
 })
 
 module.exports = router

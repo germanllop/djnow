@@ -74,9 +74,33 @@ router.put('/channelPicture',upload.single('channel'),async function(req,res){
             .write(req.file.path)
     })
     const user = await userController.updateUser(req.user,{
-        pictures:[process.env.BASE_URL+'/uploads/'+req.file.filename]
+        pictures:[
+            process.env.BASE_URL+'/uploads/'+req.file.filename,
+            req.user.pictures[1]?req.user.pictures[1]:null
+        ]
     })
     res.send(user)
+})
+
+router.put('/channelCover',upload.single('cover'),async function(req,res){
+    jimp.read(req.file.path,(err,image)=>{
+        if (err) console.log(err)        
+        image
+            .cover(1280,720)
+            .write(req.file.path)
+    })
+    const user = await userController.updateUser(req.user,{
+        pictures:[
+            req.user.pictures[0]?req.user.pictures[0]:null,
+            process.env.BASE_URL+'/uploads/'+req.file.filename
+        ]
+    })
+    res.send(user)
+})
+
+router.get('/sendEmailConfirmation',async (req,res)=>{   
+    let info = await userController.sendConfirmationEmail(req.user)
+    res.send(info)
 })
 
 module.exports = router
