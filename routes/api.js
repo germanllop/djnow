@@ -87,7 +87,7 @@ router.put('/channelCover',upload.single('cover'),async function(req,res){
         if (err) console.log(err)        
         image
             .cover(1280,720)
-            .quality(60)
+            .quality(50)
             .write(req.file.path)
     })
     const user = await userController.updateUser(req.user,{
