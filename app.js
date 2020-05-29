@@ -21,16 +21,13 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended:true }))
-const whitelist = ['https://beta.djnow.live']
+const origin = 'https://beta.djnow.live'
+if (process.env.NODE_ENV === 'development') {
+    origin = '*'
+}
 app.use(cors({ 
     credentials: true,
-    origin: function(origin, callback) {
-        if (whitelist.indexOf(origin) !== -1) {
-          callback(null, true)
-        } else {
-          callback(new Error('Not allowed by CORS'))
-        }
-      } 
+    origin: origin 
 }))
 app.use(morgan('dev'))
 
