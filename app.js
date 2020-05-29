@@ -21,14 +21,7 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended:true }))
-const origin = 'https://beta.djnow.live'
-if (process.env.NODE_ENV === 'development') {
-    origin = '*'
-}
-app.use(cors({ 
-    credentials: true,
-    origin: origin 
-}))
+app.use(cors())
 app.use(morgan('dev'))
 
 mongoose.connect(process.env.DATABASE_URL,{ 
