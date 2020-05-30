@@ -32,7 +32,6 @@ router.get('/getStreamerSource/:token',async function(req,res){
         req.socket.remoteAddress || 
         req.connection.socket.remoteAddress
     
-    console.log(ip)
     today =  new Intl.DateTimeFormat('en', { 
         year: 'numeric', 
         month: 'numeric', 
@@ -59,8 +58,7 @@ router.get('/getStreamerSource/:token',async function(req,res){
     base64UrlSignature = Buffer.from(urlSignature).toString('base64')
 
     signedUrlWithValidInterval = baseUrl + '?wmsAuthSign=' + base64UrlSignature      
-    // res.send(signedUrlWithValidInterval)
-    res.send(baseUrl)
+    res.send(signedUrlWithValidInterval)
 })
 
 router.get('/getOneStreamer',async function(req, res){
