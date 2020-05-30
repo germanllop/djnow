@@ -10,7 +10,7 @@ const path = require('path')
 async function getByHandle(handle){    
     const user = await User.findOne(
         { handle: handle, streamer:true },
-        '-follows -config -emailIsVerified -instagramId -facebookId -admin -picture -email -lastname -name')
+        '-follows -config -emailIsVerified -instagramId -facebookId -admin -picture -email -lastname -name -streamLink')
         .populate('categories')
         .exec()
     if(user){
@@ -24,7 +24,7 @@ async function getOneUser(){
     const count = await User.countDocuments({streamer:true}).exec()
     const user = await User.findOne(
         {streamer:true},
-        '-follows -config -emailIsVerified -token -instagramId -facebookId -admin -picture -email -lastname -name')
+        '-follows -config -emailIsVerified -token -instagramId -facebookId -admin -picture -email -lastname -name -streamLink')
         .skip(Math.random() * count)
         .exec()
     if(user){
@@ -38,7 +38,7 @@ async function getSomeUsers(limit){
     // const count = await User.countDocuments({streamer:true}).exec()
     const users = await User.find(
         {streamer:true},
-        '-follows -config -emailIsVerified -token -instagramId -facebookId -admin -picture -email -lastname -name')
+        '-follows -config -emailIsVerified -token -instagramId -facebookId -admin -picture -email -lastname -name -streamLink')
         // .skip(Math.random() * count)
         .limit(limit)
         .exec()
@@ -136,7 +136,7 @@ async function confirmEmail(token){
     }
 }
 
-async function getStreamLink(req){
+async function generateStreamLink(req){
     const userInfo = await User.findById(req.user._id).exec()
     let ip, baseUrl, key, strToHash, md5Sum, base64Hash, urlSignature
     ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || 
@@ -147,7 +147,7 @@ async function getStreamLink(req){
 
     streamName = '/beat/now_'+userInfo.token
     
-    baseUrl='rtmp://mixer.djnow.live/beat/now_'+userInfo.token
+    baseUrl='rtmp://mixer.djnow.live/beat'
 
     strToHash = userInfo._id + streamName + key + ip
 
@@ -178,5 +178,5 @@ module.exports = {
     changePassword,
     confirmEmail,
     sendConfirmationEmail,
-    getStreamLink
+    generateStreamLink
 }
