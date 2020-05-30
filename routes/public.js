@@ -45,7 +45,7 @@ router.get('/getStreamerSource/:token',async function(req,res){
     console.log(today)
     
     
-    baseUrl='https://mixer.djnow.live/beat/now_'+req.params.token+'/playlist.m3u8'
+    baseUrl='https://mixer.djnow.live/beat/'+req.params.token+'/playlist.m3u8'
     key = 'secret2502' 
     validMinutes = 60
 
