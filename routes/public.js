@@ -42,10 +42,7 @@ router.get('/getStreamerSource/:token',async function(req,res){
         minute:'numeric',
         second:'numeric',
         timeZone:'UTC'
-    }).format(new Date).replace(',','')
-
-    console.log(today)
-    
+    }).format(new Date).replace(',','')    
     
     baseUrl='https://mixer.djnow.live/beat/'+req.params.token+'/playlist.m3u8'
     key = 'secret2502' 
@@ -62,8 +59,7 @@ router.get('/getStreamerSource/:token',async function(req,res){
 
     base64UrlSignature = Buffer.from(urlSignature).toString('base64')
 
-    signedUrlWithValidInterval = baseUrl + '?wmsAuthSign=' + base64UrlSignature  
-    console.log(signedUrlWithValidInterval)      
+    signedUrlWithValidInterval = baseUrl + '?wmsAuthSign=' + base64UrlSignature      
     // res.send(signedUrlWithValidInterval)
     res.send(baseUrl)
 })
