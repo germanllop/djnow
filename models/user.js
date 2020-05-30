@@ -48,6 +48,10 @@ const userSchema = new mongoose.Schema({
     type:String,
     default:''
   },
+  streamLink:{
+    type:String,
+    default:null
+  },
   admin: {
     type: Boolean,
     default: false

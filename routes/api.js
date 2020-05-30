@@ -104,4 +104,9 @@ router.get('/sendEmailConfirmation',async (req,res)=>{
     res.send(info)
 })
 
+router.get('/regenerateStreamLink',async (req,res)=>{   
+    let streamLink = await userController.getStreamLink(req)
+    res.send(streamLink)
+})
+
 module.exports = router

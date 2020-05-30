@@ -21,7 +21,7 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended:true }))
-app.use(cors())
+app.use(cors({credentials:true}))
 app.use(morgan('dev'))
 
 mongoose.connect(process.env.DATABASE_URL,{ 
@@ -35,7 +35,7 @@ app.use(session({
         resave: false,
         saveUninitialized: true,
         store: new MongoStore({ mongooseConnection: mongoose.connection }),
-        cookie: { secure: true }
+        cookie: { secure: false }
     }))
 
 app.use(passport.initialize())
