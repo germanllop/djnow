@@ -62,7 +62,8 @@ router.get('/getStreamerSource/:token',async function(req,res){
 
     signedUrlWithValidInterval = baseUrl + '?wmsAuthSign=' + base64UrlSignature  
     console.log(signedUrlWithValidInterval)      
-    res.send(signedUrlWithValidInterval)
+    // res.send(signedUrlWithValidInterval)
+    res.send(baseUrl)
 })
 
 router.get('/getOneStreamer',async function(req, res){
