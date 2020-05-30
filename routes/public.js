@@ -5,24 +5,59 @@ const categoryController = require('../controllers/categoryController')
 const User = require('../models/user')
 const bcrypt = require('bcryptjs')
 
-router.get('/this',async function(req,res){
-    var id ="5eb22545fffb632328207a27"
-    User.findById(id,(err,user)=>{
-        bcrypt.genSalt(10,(err,salt)=>{
-            bcrypt.hash('123456',salt, (err,hash)=>{
-              if(err) console.log(err)          
-              user.secret = hash
-              user.save().then(newUser=>{
-                res.send(newUser)
-              }).catch(err=>console.log(err))
-            })
-          })       
-    })
-})
+// router.get('/this',async function(req,res){
+//     var id ="5eb22545fffb632328207a27"
+//     User.findById(id,(err,user)=>{
+//         bcrypt.genSalt(10,(err,salt)=>{
+//             bcrypt.hash('123456',salt, (err,hash)=>{
+//               if(err) console.log(err)          
+//               user.secret = hash
+//               user.save().then(newUser=>{
+//                 res.send(newUser)
+//               }).catch(err=>console.log(err))
+//             })
+//           })       
+//     })
+// })
 
 router.get('/getStreamer/:handle',async function(req, res){
     const user = await userController.getByHandle(req.params.handle) 
     res.send(user)
+})
+
+router.get('/getStreamerSource/:token',async function(req,res){  
+    let ip, today, baseUrl, key, validMinutes, strToHash, md5Sum, base64Hash, urlSignature
+    ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || 
+        req.connection.remoteAddress || 
+        req.socket.remoteAddress || 
+        req.connection.socket.remoteAddress
+    
+    today =  new Intl.DateTimeFormat('en', { 
+        year: 'numeric', 
+        month: 'numeric', 
+        day: '2-digit', 
+        hour:'numeric',
+        minute:'numeric',
+        second:'numeric'
+    }).format(new Date).replace(',','')
+    
+    baseUrl='https://mixer.djnow.live/beat/now_'+req.params.token+'/playlist.m3u8'
+    key = 'secret2502' 
+    validMinutes = 60
+
+    strToHash = ip + key + today + validMinutes
+
+    var crypto = require('crypto')
+    md5Sum = crypto.createHash('md5')
+    md5Sum.update(strToHash, 'ascii')
+    base64Hash = md5Sum.digest('base64')
+
+    urlSignature = "server_time=" + today  + "&hash_value=" + base64Hash + "&validminutes=" + validMinutes
+
+    base64UrlSignature = new Buffer(urlSignature).toString('base64')
+
+    signedUrlWithValidInterval = baseUrl + '?wmsAuthSign=' + base64UrlSignature        
+    res.send(signedUrlWithValidInterval)
 })
 
 router.get('/getOneStreamer',async function(req, res){
