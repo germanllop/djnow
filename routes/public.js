@@ -31,6 +31,8 @@ router.get('/getStreamerSource/:token',async function(req,res){
         req.connection.remoteAddress || 
         req.socket.remoteAddress || 
         req.connection.socket.remoteAddress
+    console.log(req.headers['x-forwarded-for'],req.connection.remoteAddress,req.socket.remoteAddress,req.connection.socket.remoteAddress)
+    
     console.log(ip)
     today =  new Intl.DateTimeFormat('en', { 
         year: 'numeric', 
