@@ -139,24 +139,24 @@ async function confirmEmail(token){
 async function generateStreamLink(req){
     const userInfo = await User.findById(req.user._id).exec()
     let ip, baseUrl, key, strToHash, md5Sum, base64Hash, urlSignature
-    ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || 
-        req.connection.remoteAddress || 
-        req.socket.remoteAddress || 
-        req.connection.socket.remoteAddress
+    // ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || 
+    //     req.connection.remoteAddress || 
+    //     req.socket.remoteAddress || 
+    //     req.connection.socket.remoteAddress
     key = 'secret2502'
-    console.log(ip)
     streamName = '/beat/now_'+userInfo.token
-    console.log(streamName)
     baseUrl='rtmp://mixer.djnow.live/beat'
 
-    strToHash = userInfo._id + streamName + key + ip
+    // strToHash = userInfo._id + streamName + key + ip
+    strToHash = userInfo._id + streamName + key 
 
     var crypto = require('crypto')
     md5Sum = crypto.createHash('md5')
     md5Sum.update(strToHash, 'ascii')
     base64Hash = md5Sum.digest('base64')
 
-    urlSignature = "id=" + userInfo._id + "&sign=" + base64Hash + "&ip=" + ip
+    // urlSignature = "id=" + userInfo._id + "&sign=" + base64Hash + "&ip=" + ip
+    urlSignature = "id=" + userInfo._id + "&sign=" + base64Hash 
 
     base64UrlSignature = Buffer.from(urlSignature).toString('base64')
 
