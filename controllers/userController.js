@@ -144,9 +144,9 @@ async function generateStreamLink(req){
         req.socket.remoteAddress || 
         req.connection.socket.remoteAddress
     key = 'secret2502'
-
+    console.log(ip)
     streamName = '/beat/now_'+userInfo.token
-    
+    console.log(streamName)
     baseUrl='rtmp://mixer.djnow.live/beat'
 
     strToHash = userInfo._id + streamName + key + ip
@@ -165,6 +165,7 @@ async function generateStreamLink(req){
     userInfo.streamLink = signedUrlWithValidInterval
     await userInfo.save()
 
+    console.log(signedUrlWithValidInterval)
     return signedUrlWithValidInterval
 }
 
