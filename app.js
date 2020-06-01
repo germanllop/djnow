@@ -28,9 +28,8 @@ mongoose.connect(process.env.DATABASE_URL,{
         useNewUrlParser: true, 
         useUnifiedTopology: true, 
         useCreateIndex: true,
-        useFindAndModify: false,
-        userMongoClient: true
-    }).catch(err=>console.log(err.name))
+        useFindAndModify: false
+    }).catch(err=>console.log(err))
 app.use(session({
         secret: process.env.SESSION_SECRET,
         resave: false,
