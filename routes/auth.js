@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
-const crypto = require("simple-crypto-js").default
+const simplecrypto = require("simple-crypto-js").default
 
 const User = require('../models/user')
 
@@ -60,8 +60,8 @@ function createUser(req,res,next){
     email:req.body.email,
     secret:req.body.pass,
     handle:req.body.email.replace(/@.*/, "")+Math.ceil(Math.random()*10000),
-    token:crypto.generateRandom(),
-    emailVerificationToken:crypto.generateRandom()
+    token:simplecrypto.generateRandom(),
+    emailVerificationToken:simplecrypto.generateRandom()
   })  
   
   bcrypt.genSalt(10,(err,salt)=>{

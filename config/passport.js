@@ -5,7 +5,7 @@ const FacebookStrategy = require('passport-facebook')
 const InstagramStrategy = require('passport-instagram')
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcryptjs')
-const crypto = require("simple-crypto-js").default
+const simplecrypto = require("simple-crypto-js").default
 const User = require('../models/user')
 
 passport.serializeUser(function(user, done) {
@@ -45,9 +45,10 @@ passport.use(new FacebookStrategy({
                             facebookId: profile.id,
                             email: profile._json.email ? profile._json.email : '',
                             name: profile._json.name ? profile._json.name : '',
+                            handle: profile._json.email ? profile._json.email.replace(/@.*/, "")+Math.ceil(Math.random()*10000) : simplecrypto.generateRandom(),
                             picture: profile._json.picture ? profile._json.picture : '',
-                            token:crypto.generateRandom(),
-                            emailVerificationToken:crypto.generateRandom()
+                            token:simplecrypto.generateRandom(),
+                            emailVerificationToken:simplecrypto.generateRandom()
                         }).save((err,user)=>{
                             console.log(err)
                             return cb(err, user)       
@@ -60,8 +61,9 @@ passport.use(new FacebookStrategy({
                     email: profile._json.email ? profile._json.email : '',
                     name: profile._json.name ? profile._json.name : '',
                     picture: profile._json.picture ? profile._json.picture : '',
-                    token:crypto.generateRandom(),
-                    emailVerificationToken:crypto.generateRandom()
+                    handle: profile._json.email ? profile._json.email.replace(/@.*/, "")+Math.ceil(Math.random()*10000) : simplecrypto.generateRandom(),
+                    token:simplecrypto.generateRandom(),
+                    emailVerificationToken:simplecrypto.generateRandom()
                 }).save((err,user)=>{
                     // console.log('User created',profile)
                     console.log(err)
