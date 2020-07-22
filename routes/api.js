@@ -3,6 +3,7 @@ const router = express.Router()
 const io = require('../config/socketio')
 const path = require('path')
 const jimp = require('jimp')
+const minioClient = require('../config/minio')
 
 const multer  = require('multer')
 const storage = multer.diskStorage({
@@ -10,7 +11,7 @@ const storage = multer.diskStorage({
       cb(null, 'uploads')
     },
     filename: function (req, file, cb) {
-      cb(null, req.user._id + '-' + Date.now() + path.extname(file.originalname))
+      cb(null, 'pub_' + req.user._id + '-' + Date.now() + path.extname(file.originalname))
     }
   })
 const upload = multer({ 
@@ -54,12 +55,21 @@ router.put('/profilePicture',upload.single('profile'),async function(req,res){
         if (err) console.log(err)        
         image
             .cover(128,128)
-            .write(req.file.path)
+            .write(req.file.path,()=>{
+                const meta = {
+                    'Content-Type': req.file.mimetype
+                }
+                minioClient.fPutObject(process.env.S3_BUCKET,req.file.filename,req.file.path,meta,(err,tag)=>{
+                    if(err){
+                        console.log(err)
+                    }
+                })
+            })
     })
     const user = await userController.updateUser(req.user,{
         picture:{
             data:{
-                url: process.env.BASE_URL+'/uploads/'+req.file.filename
+                url: process.env.S3_BASEURL + req.file.filename
             }
         }
     })
@@ -71,11 +81,20 @@ router.put('/channelPicture',upload.single('channel'),async function(req,res){
         if (err) console.log(err)        
         image
             .cover(128,128)
-            .write(req.file.path)
+            .write(req.file.path,()=>{
+                const meta = {
+                    'Content-Type': req.file.mimetype
+                }
+                minioClient.fPutObject(process.env.S3_BUCKET,req.file.filename,req.file.path,meta,(err,tag)=>{
+                    if(err){
+                        console.log(err)
+                    }
+                })
+            })
     })
     const user = await userController.updateUser(req.user,{
         pictures:[
-            process.env.BASE_URL+'/uploads/'+req.file.filename,
+            process.env.S3_BASEURL + req.file.filename,
             req.user.pictures[1]?req.user.pictures[1]:null
         ]
     })
@@ -88,12 +107,21 @@ router.put('/channelCover',upload.single('cover'),async function(req,res){
         image
             .cover(1280,720)
             .quality(50)
-            .write(req.file.path)
+            .write(req.file.path,()=>{
+                const meta = {
+                    'Content-Type': req.file.mimetype
+                }
+                minioClient.fPutObject(process.env.S3_BUCKET,req.file.filename,req.file.path,meta,(err,tag)=>{
+                    if(err){
+                        console.log(err)
+                    }
+                })
+            })
     })
     const user = await userController.updateUser(req.user,{
         pictures:[
             req.user.pictures[0]?req.user.pictures[0]:null,
-            process.env.BASE_URL+'/uploads/'+req.file.filename
+            process.env.S3_BASEURL+req.file.filename
         ]
     })
     res.send(user)
