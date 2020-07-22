@@ -136,38 +136,38 @@ async function confirmEmail(token){
     }
 }
 
-async function generateStreamLink(req){
-    const userInfo = await User.findById(req.user._id).exec()
-    let ip, baseUrl, key, strToHash, md5Sum, base64Hash, urlSignature
-    // ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || 
-    //     req.connection.remoteAddress || 
-    //     req.socket.remoteAddress || 
-    //     req.connection.socket.remoteAddress
-    key = 'secret2502'
-    streamName = '/beat/now_'+userInfo.token
-    baseUrl='rtmp://mixer.djnow.live/beat'
+// async function generateStreamLink(req){
+//     const userInfo = await User.findById(req.user._id).exec()
+//     let ip, baseUrl, key, strToHash, md5Sum, base64Hash, urlSignature
+//     // ip = (req.headers['x-forwarded-for'] || '').split(',').pop().trim() || 
+//     //     req.connection.remoteAddress || 
+//     //     req.socket.remoteAddress || 
+//     //     req.connection.socket.remoteAddress
+//     key = 'secret2502'
+//     streamName = '/beat/now_'+userInfo.token
+//     baseUrl='rtmp://mixer.djnow.live/beat'
 
-    // strToHash = userInfo._id + streamName + key + ip
-    strToHash = userInfo._id + streamName + key 
+//     // strToHash = userInfo._id + streamName + key + ip
+//     strToHash = userInfo._id + streamName + key 
 
-    var crypto = require('crypto')
-    md5Sum = crypto.createHash('md5')
-    md5Sum.update(strToHash, 'ascii')
-    base64Hash = md5Sum.digest('base64')
+//     var crypto = require('crypto')
+//     md5Sum = crypto.createHash('md5')
+//     md5Sum.update(strToHash, 'ascii')
+//     base64Hash = md5Sum.digest('base64')
 
-    // urlSignature = "id=" + userInfo._id + "&sign=" + base64Hash + "&ip=" + ip
-    urlSignature = "id=" + userInfo._id + "&sign=" + base64Hash 
+//     // urlSignature = "id=" + userInfo._id + "&sign=" + base64Hash + "&ip=" + ip
+//     urlSignature = "id=" + userInfo._id + "&sign=" + base64Hash 
 
-    base64UrlSignature = Buffer.from(urlSignature).toString('base64')
+//     base64UrlSignature = Buffer.from(urlSignature).toString('base64')
 
-    signedUrlWithValidInterval = baseUrl + "?publishsign=" + base64UrlSignature 
+//     signedUrlWithValidInterval = baseUrl + "?publishsign=" + base64UrlSignature 
     
-    userInfo.streamLink = signedUrlWithValidInterval
-    await userInfo.save()
+//     userInfo.streamLink = signedUrlWithValidInterval
+//     await userInfo.save()
 
-    console.log(signedUrlWithValidInterval)
-    return signedUrlWithValidInterval
-}
+//     console.log(signedUrlWithValidInterval)
+//     return signedUrlWithValidInterval
+// }
 
 
 module.exports = {
@@ -178,6 +178,5 @@ module.exports = {
     updateUser,
     changePassword,
     confirmEmail,
-    sendConfirmationEmail,
-    generateStreamLink
+    sendConfirmationEmail
 }
