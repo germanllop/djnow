@@ -4,6 +4,7 @@ const io = require('../config/socketio')
 const path = require('path')
 const jimp = require('jimp')
 const minioClient = require('../config/minio')
+const fs = require('fs')
 
 const multer  = require('multer')
 const storage = multer.diskStorage({
@@ -63,6 +64,7 @@ router.put('/profilePicture',upload.single('profile'),async function(req,res){
                     if(err){
                         console.log(err)
                     }
+                    fs.unlinkSync(req.file.path)
                 })
             })
     })
@@ -89,6 +91,7 @@ router.put('/channelPicture',upload.single('channel'),async function(req,res){
                     if(err){
                         console.log(err)
                     }
+                    fs.unlinkSync(req.file.path)
                 })
             })
     })
@@ -115,6 +118,7 @@ router.put('/channelCover',upload.single('cover'),async function(req,res){
                     if(err){
                         console.log(err)
                     }
+                    fs.unlinkSync(req.file.path)
                 })
             })
     })
